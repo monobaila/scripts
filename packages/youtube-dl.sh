@@ -19,10 +19,9 @@ set -u
 VER="2019.04.24"
 TMPDIR=$(mktemp -d)
 BASE_URI="https://github.com/ytdl-org/youtube-dl/releases/download/${VER}"
-CHECKSUM_FILE="SHA2-256SUMS"
 BIN_NAME="youtube-dl"
 SIG_FILE="youtube-dl.sig"
-FILES="${BIN_NAME} ${CHECKSUM_FILE} ${SIG_FILE}"
+FILES="${BIN_NAME} ${SIG_FILE}"
 BIN_DEST="/usr/bin/${BIN_NAME}"
 
 
@@ -58,12 +57,10 @@ done
 
 gpg --verify "${SIG_FILE}"
 
-grep "$(sha256sum ${BIN_NAME})" "${CHECKSUM_FILE}"
-
 sudo mv "$BIN_NAME" "$BIN_DEST"
 sudo chmod +x ${BIN_DEST}
 
 youtube-dl --version
 
-echo -e "\n$(tput setaf 2)... Successfuly installed ${BIN_NAME} ${VER}. SHA256"\
-        "on file is correct and signature of SHA256 is valid.$(tput sgr0)"
+echo -e "\n$(tput setaf 2)... Successfuly installed ${BIN_NAME} ${VER}."\
+        "Signature verfified via gpg.$(tput sgr0)"
